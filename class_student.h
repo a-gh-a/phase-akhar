@@ -6,12 +6,12 @@ using namespace std;
 
 class Student : public User {
 private:
-    int student_id;
-    string name, email;
+    long long student_id;
+    string name, email,lastname;
     float balance;
     vector<int> reservations;
     bool active;
-    int phone;
+    long long phone;
 
 public:
 
@@ -86,7 +86,7 @@ public:
                      }
 
 
-    void set_balance() {
+    void set_balance_n() {
         for(int i=0;i<1;)
             {
                 cout<<"enter balance:";
@@ -99,9 +99,18 @@ public:
 
     }
 
+
+void set_email_direct(const string& e) { email = e; }
+void set_student_id(long long id) { student_id = id; }
+void set_phone_direct(long long p) { phone = p; }
+void set_balance() { balance = 10; }
+void setName(const string& n) { name = n; }
+void setLastName(const string& l) { lastname = l; }
+//void setUserID(int id) { user_id = id; }
+
     // Getters
-    int get_phone() const {return phone;}
-    int get_student_id() const { return student_id; }
+    long long get_phone() const {return phone;}
+    long long get_student_id() const { return student_id; }
     string get_name() const { return name; }
     string get_email() const { return email; }
     float get_balance() const { return balance; }

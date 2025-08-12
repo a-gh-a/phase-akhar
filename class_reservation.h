@@ -4,12 +4,16 @@
 #include "class_meal.h"
 #include "class_din_hall.h"
 #include "class_student.h"
+#include "class_transaction.h"
+
 
 using namespace std;
 
 extern Student stu1;
 extern din d1;
 extern M me1;
+extern Transaction TRA;
+
 
 enum ReservationStatus { SUCCESS, CANCELLED, FAILED };
 
@@ -33,6 +37,7 @@ public:
         cout << "Reservation ID: " << reservation_id
              << ", Student: " << studentt.get_name()
              << ", Meal: " << meall.get_name()
+             << ",dining hall:"<<halll.get_address()
              << ", Status: " << status << endl;
     }
 
@@ -63,19 +68,15 @@ public:
     void set_hall(din h2) { halll = h2; }
 
     void set_status() {
-        int i;
-        cout << "Enter reservation status (1=SUCCESS, 2=CANCELLED, 3=FAILED): ";
-        cin >> i;
-        if (i == 1) status = SUCCESS;
-        else if (i == 2) status = CANCELLED;
-        else if (i == 3) status = FAILED;
-        else cout << "Invalid status!";
+        if (TRA.get_status_T()==COMPLETED) status = SUCCESS;
+        if (TRA.get_status_T()==FIALED) status = FAILED;
+        else cout << "error in ReservationStatus!";
     }
 
     int get_reservation_id() const { return reservation_id; }
     Student get_student() const { return studentt; }
     M get_meall() const { return meall; }
-    din get_halll() const { return halll; }
+    din get_hall () const { return halll; }
     ReservationStatus get_status() const { return status; }
     time_t get_created_at() const { return created_at; }
 };

@@ -5,6 +5,10 @@
 #include <ctime>
 #include <cstdlib>
 #include<windows.h>
+#include <fstream>
+#include <sstream>
+#include <set>
+
 
 #include "class_meal.h"
 #include "class_din_hall.h"
@@ -16,14 +20,57 @@
 
 using namespace std;
 
-Student stu1;
+//userID,studentID,name,lastname,hashpassword,email,phone
+//Student stu1;
 din d1;
 M me1;
 ShoppingCart sh1;
 vector<Reservation> re1;
+Transaction TRA;
+Student currentStudent;
+
 
 void clearConsole() {
     system("cls"); // فقط در ویندوز
+}
+
+
+
+
+
+vector<Student> loadStudentsFromCSV(const string& studentsCsvFile) {
+    vector<Student> students;
+    ifstream file(studentsCsvFile);
+    string line;
+    bool isHeader = true;
+
+    while (getline(file, line)) {
+        if (isHeader) { isHeader = false; continue; }
+
+        stringstream ss(line);
+        string userID, studentID, name, lastname, hashpassword, email, phoneStr;
+        getline(ss, userID, ',');
+        getline(ss, studentID, ',');
+        getline(ss, name, ',');
+        getline(ss, lastname, ',');
+        getline(ss, hashpassword, ',');
+        getline(ss, email, ',');
+        getline(ss, phoneStr, ',');
+
+        Student s;
+        //s.setUserID(stoi(userID));
+        s.set_student_id(stoll(studentID));
+        s.setName(name);
+        s.setLastName(lastname);
+        s.setPassword(hashpassword);
+        s.set_email_direct(email);
+        s.set_phone_direct(stoll(phoneStr));
+        s.set_balance(); // مقدار پیش‌فرض یا از فایل جداگانه
+
+        students.push_back(s);
+    }
+
+    return students;
 }
 
 class Admin : public Student {
@@ -39,13 +86,32 @@ public:
     }
 };
 
-void P() {
+
+Student loginMenu(const vector<Student>& s) {
+    long long inputID;
+    cout << "Enter your student ID: ";
+    cin >> inputID;
+
+for(size_t i=0;i<s.size();i++){
+        if (s[i].get_student_id() == inputID) {
+            cout << "Welcome, " << s[i].get_name() << "!\n";
+            return s[i];
+        }
+      }
+
+    cout << "Student not found. Exiting...\n";
+    exit(1);
+}
+
+
+
+void P(Student & stu1) {
     int k;
     cout << "\n1. Display student information\n";
     cout << "2. Show credit\n";
     cout << "3. View reservations\n";
     cout << "4. Add reservation\n";
-    cout << "5. Add to cart\n";
+    cout << "5.  \n";
     cout << "6. Purchase confirmation\n";
     cout << "7. Cancel the reservation\n";
     cout << "8. EXIT\n";
@@ -58,7 +124,9 @@ void P() {
         Sleep(5000);
         break;
     case 2:
-        // stu1.showCredit(); // اگر تابعی برای نمایش اعتبار دارید
+         cout<<TRA.getAmount();
+         Sleep(5000);
+
         break;
     case 3:
         for (const auto& res : re1)
@@ -66,14 +134,17 @@ void P() {
                     Sleep(5000);
 
         break;
-    case 4: {
+    case 4:{
         Reservation r;
+        me1.input();
+        d1.input();
+        TRA.setStatus();
         r.input(stu1, me1, d1, re1);
         cout << "Reservation added.\n";
         break;
     }
     case 5:
-        // sh1.addToCart(); // اگر پیاده‌سازی شده
+
         break;
     case 6:
         // sh1.confirmPurchase(); // اگر پیاده‌سازی شده
@@ -94,12 +165,15 @@ void P() {
 }
 
 int main() {
-    stu1.input();
-    me1.input();
-    d1.input();
+    vector<Student> students = loadStudentsFromCSV("studentsCsvFile.csv");
+    currentStudent = loginMenu(students);
+    srand(time(nullptr)); // مقداردهی اولیه به rand
+
+    TRA.setAmount();
+
 
     while (true) {
-        P();
+        P(currentStudent);
         clearConsole();
     }
 

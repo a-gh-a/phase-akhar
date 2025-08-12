@@ -22,6 +22,10 @@ public:
     string getLastName() const { return lastName; }
     string getHashedPassword() const { return hashedPassword; }
 
+    void setPassword(const std::string& pass) {
+    hashedPassword = pass;
+}
+
     // Setters
     void setName(string n) { name = n; }
     void setLastName(string ln) { lastName = ln; }

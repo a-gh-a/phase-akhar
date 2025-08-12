@@ -3,41 +3,49 @@
 
 using namespace std;
 
+//extern vector<Reservation> re1;
+extern Student currentStudent;
+extern M me1;
+
+
 enum  TransactionType {PAYMENT,TRANSFER};
 
-enum  TransactionStatus {PENDING,COMPLETED,FIALED};
+enum  TransactionStatus {COMPLETED,FIALED};
 
 class Transaction {
 private:
     int transactionID;
     string trackingCode;
-    float amount;
+    int amount;
     TransactionType type;
-    TransactionStatus status;
+    TransactionStatus status_T;
     time_t createdAt;
 public:
 
     Transaction() {
     transactionID = rand();
     trackingCode = "TX-" + to_string(transactionID);
-    amount = 0.0;
+    amount = 0;
     type =PAYMENT;
-    status = PENDING;
+    status_T = FIALED;
     createdAt = time(nullptr);
 }
 
 
+
+
+
+
     int getTransactionID() const { return transactionID; };
     string getTrackingCode() const { return trackingCode; };
-    float getAmount() const { return amount; };
+     int getAmount() const { return amount; };
     TransactionType getType() const { return type; };
-    TransactionStatus getStatus() const { return status; };
+    TransactionStatus getStatus() const { return status_T; };
     time_t getCreatedAt() const { return createdAt; };
 
 
     void setAmount()  {
-        cout<<"enter amount:"<<endl;
-        cin>>amount;
+        amount=currentStudent.get_balance();
         };
 
 
@@ -51,15 +59,16 @@ public:
      };
 
 
-    void setStatus(TransactionStatus status){
-        int i;
-        cout<<"enter status (1.PENDING,2.COMPLETED,3.FIALED)"<<endl;
-        cin>>i;
-        if(i==1) status=PENDING;
-        if(i==2) status=COMPLETED;
-        else status=FIALED;
-
+    void setStatus(){
+        if(me1.get_price()<amount || me1.get_price()==amount){ status_T=COMPLETED;  amount=amount-me1.get_price();}
+        if(me1.get_price()>amount) status_T=FIALED;
+        //else cerr<<"error in Transaction status";
     };
+
+
+    TransactionStatus get_status_T(){return status_T;}
+
+
 };
 
 

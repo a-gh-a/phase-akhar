@@ -13,8 +13,10 @@ private:
     int meal_id;
     string name;
     MealType type;
-    float price;
+    int price;
     day day_Re;
+    static set<int> used_ids; // نگهداری شناسه‌های قبلی
+
 
 public:
 
@@ -26,28 +28,43 @@ public:
 
     void input(){
         set_meal_id();
-        set_name();
         set_type();
+        set_name();
         set_price();
         set_day();
         }
 
     // Setters with validation
     void set_meal_id() {
-        cout<<"enter meal_id:";
-        cin>>meal_id;
-         }
+
+
+        int id;
+        do {id = rand() % 9000 + 1000; }
+             while (used_ids.find(id) != used_ids.end());
+
+        meal_id = id;
+        used_ids.insert(id);
+
+        cout << "meal_id: " << meal_id << endl;
+
+    }
+
 
 
     void set_name() {
-        cout<<"enter meal_name:";
-        cin>>name;
+        while(true){
+        int i;
+        cout<<"enter meal_name:(1.gorme sabzi 2.istanboli)";
+        cin>>i;
+        if(i==1){name="gorme sabzi";return;}
+        if(i==2){name="istanboli";return;}
          }
+    }
 
 
     void set_type() {
          int i;
-         cout<<"enter type meal:(1,2,3)";
+         cout<<"enter type meal:(1.BREAKFAST,2.LUNCH,3.DINNER)";
          cin>>i;
           if(i==1) type=BREAKFAST;
           if(i==2) type=LUNCH;
@@ -58,40 +75,39 @@ public:
 
 
     void set_price() {
+     if(type==BREAKFAST)price=1;
+     else price=2;
 
-        for(int i=0;i<1;)
-            {
-                cout<<"enter price:";
-                cin>>price;
-                if (price > 0) { i++;}
-
-
-                 else cout<<endl<<"enter agin";
-            }
     }
 
     void set_day(){
+        while(true){
     int i;
     cout<<"enter day(1,2,3,4,5):";
     cin>>i;
-    if(i==1)day_Re=MONDAY;
-    if(i==2)day_Re=TUESDAY;
-    if(i==3)day_Re=WEDNESDAY;
-    if(i==4)day_Re=THURSDAY;
-    else day_Re=FRIDAY;
-
-
+    switch(i){
+    case 1:day_Re=MONDAY;return;
+    case 2:day_Re=TUESDAY;return;
+    case 3:day_Re=WEDNESDAY;return;
+    case 4:day_Re=THURSDAY;return;
+    case 5:day_Re=FRIDAY;return;
+    default:break;
+    }
+    }
     }
 
     // Getters
     int get_meal_id() const { return meal_id; }
     string get_name() const { return name; }
     MealType get_type() const { return type; }
-    float get_price() const { return price; }
+    int get_price() const { return price; }
     day get_day() const {return day_Re;}
 
 
 };
+
+set<int> M::used_ids;
+
 
 
 #endif // CLASS_MEAL_H_INCLUDED

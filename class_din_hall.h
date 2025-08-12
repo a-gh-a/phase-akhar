@@ -19,24 +19,29 @@ public:
     }
 
     void input(){
-        set_hall_id();
         set_address();
+        set_hall_id();
         set_capacity();
                 }
 
     // Setters with validation
-    void set_hall_id() { cout<<"enter id:";cin>>hall_id; }
-    void set_address() { cout<<"enter address:";cin>>address; }
+    void set_hall_id() {
+        if(address=="golstan"){hall_id=1125;return;}
+        if(address=="pradis"){hall_id=1126;return;}
+        cout<<"error in id_hall"; }
+    void set_address() {
+         int i;
+         while(true){
+         cout<<"choose address:(1.golstan 2.pradis)";
+         cin>>i;
+         if(i==1){address="golstan";return;}
+         if(i==2){address="pradis";return;}
+         }
+          }
     void set_capacity() {
-         for(int i=0;i<1;)
-            {
-                cout<<"enter capacity:";
-                cin>>capacity;
-                if (capacity > 0) { i++;}
-
-
-                 else cout<<endl<<"enter again";
-            }
+        if(hall_id==1125) {capacity=10;return;}
+        if(hall_id==1126) {capacity=2;return;}
+        cout<<"error in capacity";
     }
 
     // Getters
