@@ -5,19 +5,19 @@ using namespace std;
 
 class User {
 protected:
-    int userID;
+    string userID;
     string name, lastName;
     string hashedPassword;
 
 public:
 
-    User(int id, string n, string ln, string pwd) : userID(id), name(n), lastName(ln), hashedPassword(pwd) {}
+    User(string id, string n, string ln, string pwd) : userID(id), name(n), lastName(ln), hashedPassword(pwd) {}
 
-    User() : userID(0), name(""), lastName(""), hashedPassword("") {};
+    User() : userID(""), name(""), lastName(""), hashedPassword("") {};
 
 
     // Getters
-    int getUserID() const { return userID; }
+    string getUserID() const { return userID; }
     string getName() const { return name; }
     string getLastName() const { return lastName; }
     string getHashedPassword() const { return hashedPassword; }

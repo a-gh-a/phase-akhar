@@ -4,6 +4,9 @@
 
 using namespace std;
 
+
+extern string sfile;
+
 class Student : public User {
 private:
     long long student_id;
@@ -16,10 +19,10 @@ private:
 public:
 
     // Constructor
-   // Student(int id, const string& name, const string& email, float balance,
-     //       const vector<int>& reservations, bool active, int phone)
-     //   : student_id(id), name(name), email(email), balance(balance),
-      //    reservations(reservations), active(active), phone(phone) {}
+    // Student(int id, const string& name, const string& email, float balance,
+    //       const vector<int>& reservations, bool active, int phone)
+    //   : student_id(id), name(name), email(email), balance(balance),
+    //    reservations(reservations), active(active), phone(phone) {}
 
     // Optional: Default constructor
     Student() : student_id(0), name(""), email(""), balance(0.0),
@@ -30,14 +33,13 @@ public:
         cout << "Student: " << name << ", Email: " << email << ", Balance: " << balance << endl;
     }
 
-    void input()
-    {
-     set_student_id();
-     set_name();
-     set_email();
-     set_balance();
-     set_active();
-     set_phone();
+    void input() {
+        set_student_id();
+        set_name();
+        set_email();
+        set_balance();
+        set_active();
+        set_phone();
     }
 
     bool reserve_meal(int meal_id, float price) {
@@ -62,15 +64,15 @@ public:
     }
 
     // Setters with validation
-    void set_phone (){cout<<"enter phone:";cin>>phone;}
+    void set_phone () {cout<<"enter phone:";cin>>phone;}
     void set_student_id() { cout<<"enter student_id:";cin>>student_id;  }
     void set_name() { cout<<"enter student_name:"; cin>>name; }
     void set_active() {
-          int i;
-          cout<< " activated ?(yes=1,no=0)"<<endl;
-          cin>>i;
-          if(i==0) active=true;
-          else active=false;
+        int i;
+        cout<< " activated ?(yes=1,no=0)"<<endl;
+        cin>>i;
+        if(i==0) active=true;
+        else active=false;
     }
     void set_email() {
 
@@ -100,13 +102,13 @@ public:
     }
 
 
-void set_email_direct(const string& e) { email = e; }
-void set_student_id(long long id) { student_id = id; }
-void set_phone_direct(long long p) { phone = p; }
-void set_balance() { balance = 10; }
-void setName(const string& n) { name = n; }
-void setLastName(const string& l) { lastname = l; }
-//void setUserID(int id) { user_id = id; }
+    void set_email_direct(const string& e) { email = e; }
+    void set_student_id(long long id) { student_id = id; }
+    void set_phone_direct(long long p) { phone = p; }
+    void set_balance() { balance = 10; }
+    void setName(const string& n) { name = n; }
+    void setLastName(const string& l) { lastname = l; }
+    void setUserID(string id) { userID= id;   }
 
     // Getters
     long long get_phone() const {return phone;}
@@ -116,7 +118,6 @@ void setLastName(const string& l) { lastname = l; }
     float get_balance() const { return balance; }
     bool get_active() const {return active;}
 };
-
 
 
 #endif // CLASS_STUDENT_H_INCLUDED

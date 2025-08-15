@@ -1,0 +1,8 @@
+12,Chavosh,gorme sabzi,golstan,0
+13,Kian,gorme sabzi,golstan,0
+12,Kian,gorme sabzi,golstan,0
+14,Kiana,istanboli,pradis,0
+1222,Kiana,gorme sabzi,golstan,0
+1444,Amir,istanboli,golstan,0
+125,Chavosh,istanboli,pradis,0
+125,Rezvan,istanboli,golstan,0

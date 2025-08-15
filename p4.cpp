@@ -28,6 +28,7 @@ ShoppingCart sh1;
 vector<Reservation> re1;
 Transaction TRA;
 Student currentStudent;
+string sfile;
 
 
 void clearConsole() {
@@ -43,12 +44,11 @@ vector<Student> loadStudentsFromCSV(const string& studentsCsvFile) {
     ifstream file(studentsCsvFile);
     string line;
     bool isHeader = true;
-
+    string userID, studentID, name, lastname, hashpassword, email, phoneStr;
     while (getline(file, line)) {
         if (isHeader) { isHeader = false; continue; }
 
         stringstream ss(line);
-        string userID, studentID, name, lastname, hashpassword, email, phoneStr;
         getline(ss, userID, ',');
         getline(ss, studentID, ',');
         getline(ss, name, ',');
@@ -57,8 +57,9 @@ vector<Student> loadStudentsFromCSV(const string& studentsCsvFile) {
         getline(ss, email, ',');
         getline(ss, phoneStr, ',');
 
+
         Student s;
-        //s.setUserID(stoi(userID));
+        s.setUserID(userID);
         s.set_student_id(stoll(studentID));
         s.setName(name);
         s.setLastName(lastname);
@@ -67,8 +68,11 @@ vector<Student> loadStudentsFromCSV(const string& studentsCsvFile) {
         s.set_phone_direct(stoll(phoneStr));
         s.set_balance(); // مقدار پیش‌فرض یا از فایل جداگانه
 
+
+
         students.push_back(s);
     }
+
 
     return students;
 }
@@ -131,6 +135,7 @@ void P(Student & stu1) {
     case 3:
         for (const auto& res : re1)
             res.viewReservations();
+            cout<<sfile;
                     Sleep(5000);
 
         break;
@@ -140,6 +145,21 @@ void P(Student & stu1) {
         d1.input();
         TRA.setStatus();
         r.input(stu1, me1, d1, re1);
+
+
+
+        // ذخیره‌سازی اطلاعات در فایل
+        ofstream outFile(sfile, ios::app); // فایل را در حالت الحاق باز می‌کند
+        if (outFile.is_open()) {
+            outFile << r.get_reservation_id()
+                    << "," << r.get_student().get_name()
+                    << "," << r.get_meall().get_name()
+                    << "," << r.get_hall ().get_address()
+                    << "," << r.get_status()<< endl;
+            outFile.close(); // بستن فایل
+        } else cout << "Unable to open file";
+
+
         cout << "Reservation added.\n";
         break;
     }
@@ -170,7 +190,7 @@ int main() {
     srand(time(nullptr)); // مقداردهی اولیه به rand
 
     TRA.setAmount();
-
+    sfile="stu"+currentStudent.getUserID()+".txt";
 
     while (true) {
         P(currentStudent);
