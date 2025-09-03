@@ -1,6 +1,9 @@
 #ifndef CLASS_TRANSACTION_H_INCLUDED
 #define CLASS_TRANSACTION_H_INCLUDED
 
+
+#include "class_student.h"
+
 using namespace std;
 
 //extern vector<Reservation> re1;
@@ -25,7 +28,7 @@ public:
     Transaction() {
     transactionID = rand();
     trackingCode = "TX-" + to_string(transactionID);
-    amount = 0;
+    amount = 10;
     type =PAYMENT;
     status_T = FIALED;
     createdAt = time(nullptr);
@@ -45,8 +48,10 @@ public:
 
 
     void setAmount()  {
-        amount=currentStudent.get_balance();
+        amount=10;
         };
+
+    void setAmount_by_file(int i) {amount=i;};
 
 
 

@@ -13,6 +13,7 @@ extern Student stu1;
 extern din d1;
 extern M me1;
 extern Transaction TRA;
+extern Student currentStudent;
 
 
 enum ReservationStatus { SUCCESS, CANCELLED, FAILED };
@@ -52,8 +53,16 @@ public:
     }
 
     void cancel() {
-        if (status == SUCCESS)
+        int i;
+        if (status == SUCCESS){
+
             status = CANCELLED;
+            i=currentStudent.get_balance()+ meall.get_price();
+            cout<<" you return to meno...";
+            Sleep(2000);
+            TRA.setAmount_by_file(i);
+
+        }
         else
             cout << "cansel bod";
     }
@@ -63,15 +72,26 @@ public:
         cin >> reservation_id;
     }
 
+    void set_reservation_id_by_file(int i) {reservation_id=i;}
+
     void set_student(Student b1) { studentt = b1; }
     void set_meal(M h1) { meall = h1; }
     void set_hall(din h2) { halll = h2; }
 
     void set_status() {
-        if (TRA.get_status_T()==COMPLETED) status = SUCCESS;
-        if (TRA.get_status_T()==FIALED) status = FAILED;
-        else cout << "error in ReservationStatus!";
+        if (TRA.get_status_T()==COMPLETED){ status = SUCCESS; cout<<"reservation is SUCCESS"<<endl<<" you return to meno..."; Sleep(2000);}
+        if (TRA.get_status_T()==FIALED){ status = FAILED; cout<<"reservation is FAILED"<<endl<<" you return to meno..."; Sleep(2000);}
+        if (TRA.get_status_T()!=FIALED && TRA.get_status_T()!=COMPLETED ){ cerr << "error in ReservationStatus!"; Sleep(2000);}
+
     }
+
+    void set_status_by_file(int i) {
+        if (i==0) status = SUCCESS;
+        if (i==1) status = CANCELLED;
+        if (i==2) status = FAILED;
+        //else cout << "error in ReservationStatus!";
+    }
+
 
     int get_reservation_id() const { return reservation_id; }
     Student get_student() const { return studentt; }

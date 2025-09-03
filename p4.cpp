@@ -18,6 +18,7 @@
 #include "class_transaction.h"
 #include "class_shop.h"
 
+
 using namespace std;
 
 //userID,studentID,name,lastname,hashpassword,email,phone
@@ -29,7 +30,11 @@ vector<Reservation> re1;
 Transaction TRA;
 Student currentStudent;
 string sfile;
+int amuot2;
+bool fileexists;
 
+
+set<int> M::used_ids = {0};
 
 void clearConsole() {
     system("cls"); // فقط در ویندوز
@@ -66,7 +71,7 @@ vector<Student> loadStudentsFromCSV(const string& studentsCsvFile) {
         s.setPassword(hashpassword);
         s.set_email_direct(email);
         s.set_phone_direct(stoll(phoneStr));
-        s.set_balance(); // مقدار پیش‌فرض یا از فایل جداگانه
+        s.set_balance(stoi("10")); // مقدار پیش‌فرض یا از فایل جداگانه
 
 
 
@@ -75,6 +80,73 @@ vector<Student> loadStudentsFromCSV(const string& studentsCsvFile) {
 
 
     return students;
+}
+
+
+vector<Reservation> loadReservationsFrom(const string& sfile) {
+    vector<Reservation> reservations;
+    ifstream file(sfile);
+    fileexists=file.good();
+    string line;
+   // bool isHeader = true;
+    string reservationIDStr, studentIDStr, mealStr, hallStr, statusStr,blansStr,mealidStr,mealnameStr,mealtypeStr,mealpriceStr,mealdayStr;
+
+     while (getline(file, line)) {
+       // if (isHeader) {
+           // isHeader = false;
+           // continue;
+        //}
+
+        stringstream ss(line);
+        getline(ss, reservationIDStr, ',');
+        getline(ss, studentIDStr, ',');
+        getline(ss, mealStr, ',');
+        getline(ss, hallStr, ',');
+        getline(ss, blansStr, ',');
+        getline(ss, mealidStr, ',');
+        getline(ss, mealnameStr, ',');
+        getline(ss, mealtypeStr, ',');
+        getline(ss, mealpriceStr, ',');
+        getline(ss, mealdayStr, ',');
+        getline(ss, statusStr, ',');
+
+        Reservation r;
+        r.set_reservation_id_by_file(stoi(reservationIDStr));
+
+        // فرض بر این است که متد getStudentById وجود دارد که دانشجو را با شناسه آن برمی‌گرداند
+        r.set_student(currentStudent);
+       // r.get_student().setName(studentIDStr);
+
+
+        // فرض بر این است که متد getMealByName وجود دارد که غذا را با نام آن برمی‌گرداند
+        me1.set_meal_id_by_file(stoi(mealidStr));
+        me1.set_name_by_file(mealnameStr);
+        me1.set_type_by_file(stoi(mealtypeStr));
+        me1.set_price();
+        me1.set_day_by_file(stoi(mealdayStr));
+        r.set_meal(me1);
+
+
+        // فرض بر این است که متد getHallByName وجود دارد که سالن را با نام آن برمی‌گرداند
+
+        d1.set_address_by_file(hallStr);
+        d1.set_hall_id();
+        d1.set_capacity();
+        r.set_hall(d1);
+
+        //ذخیره موحودی
+
+        if(fileexists)TRA.setAmount_by_file(stoi(blansStr));
+        else TRA.setAmount_by_file(10);
+
+        // فرض بر این است که Enum یا نوعی برای وضعیت رزرو وجود دارد
+
+        r.set_status_by_file(stoi(statusStr));
+
+        reservations.push_back(r);
+    }
+
+    return reservations;
 }
 
 class Admin : public Student {
@@ -125,6 +197,7 @@ void P(Student & stu1) {
     switch (k) {
     case 1:
         stu1.showStudentInfo();
+
         Sleep(5000);
         break;
     case 2:
@@ -135,7 +208,7 @@ void P(Student & stu1) {
     case 3:
         for (const auto& res : re1)
             res.viewReservations();
-            cout<<sfile;
+
                     Sleep(5000);
 
         break;
@@ -145,6 +218,8 @@ void P(Student & stu1) {
         d1.input();
         TRA.setStatus();
         r.input(stu1, me1, d1, re1);
+        stu1.set_balance(TRA.getAmount());
+
 
 
 
@@ -155,12 +230,18 @@ void P(Student & stu1) {
                     << "," << r.get_student().get_name()
                     << "," << r.get_meall().get_name()
                     << "," << r.get_hall ().get_address()
+                    << "," << TRA.getAmount()
+                    << "," << me1.get_meal_id()
+                    << "," << me1.get_name()
+                    << "," << me1.get_type()
+                    << "," << me1.get_price()
+                    << "," << me1.get_day()
                     << "," << r.get_status()<< endl;
             outFile.close(); // بستن فایل
         } else cout << "Unable to open file";
 
 
-        cout << "Reservation added.\n";
+
         break;
     }
     case 5:
@@ -169,28 +250,83 @@ void P(Student & stu1) {
     case 6:
         // sh1.confirmPurchase(); // اگر پیاده‌سازی شده
         break;
-    case 7:
-        if (!re1.empty()) {
-            re1.back().cancel();
-            cout << "Last reservation cancelled.\n";
-        } else {
-            cout << "No reservations to cancel.\n";
-        }
+    case 7:{
+         int i;
+         i=1;
+         for (const auto& res : re1) {
+
+
+            cout<<i<<"____";
+            res.viewReservations();
+            i++;
+            }
+
+            cout<<endl<<"enter number of Reservations for Cancel : ";
+            cin>>i;
+            i--;
+            re1[i].cancel();
+            currentStudent.set_balance(TRA.getAmount());
+
+
+
         break;
+    }
     case 8:
+        {
+
+        ofstream file(sfile, ios::trunc);
+        for (const auto& res : re1){
+
+          // ذخیره‌سازی اطلاعات در فایل
+        if (file.is_open()) {
+            file << res.get_reservation_id()
+                    << "," << res.get_student().get_name()
+                    << "," << res.get_meall().get_name()
+                    << "," << res.get_hall ().get_address()
+                    << "," << TRA.getAmount()
+                    << "," << me1.get_meal_id()
+                    << "," << me1.get_name()
+                    << "," << me1.get_type()
+                    << "," << me1.get_price()
+                    << "," << me1.get_day()
+                    << "," << res.get_status()<< endl;
+        } else{ cout << "Unable to open file"; Sleep(2000);}
+
+        }
+        file.close(); // بستن فایل
+
+
         exit(0);
+        }
     default:
         cout << "Invalid option.\n";
     }
 }
 
 int main() {
+
+
     vector<Student> students = loadStudentsFromCSV("studentsCsvFile.csv");
     currentStudent = loginMenu(students);
     srand(time(nullptr)); // مقداردهی اولیه به rand
 
+
+
     TRA.setAmount();
     sfile="stu"+currentStudent.getUserID()+".txt";
+
+    re1=loadReservationsFrom(sfile);
+
+
+    currentStudent.set_balance(TRA.getAmount());
+
+
+
+
+
+         //    cout<< ", Student: " << re1[1].get_student().get_name()
+          //   << ", Meal: " << re1[1].get_meall().get_name()
+           //  << ",dining hall:"<<re1[1].get_hall().get_address();
 
     while (true) {
         P(currentStudent);

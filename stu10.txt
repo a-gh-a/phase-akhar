@@ -1,0 +1,4 @@
+12,Farangis,honey,golstan,7,3178,honey,0,1,0,0
+148,Farangis,honey,golstan,7,3178,honey,0,1,0,0
+147,Farangis,honey,pradis,7,3178,honey,0,1,0,2
+149,Farangis,honey,golstan,7,3178,honey,0,1,0,2

@@ -36,8 +36,11 @@ public:
          cin>>i;
          if(i==1){address="golstan";return;}
          if(i==2){address="pradis";return;}
-         }
-          }
+         }}
+
+    void set_address_by_file(string s){address=s;return;}
+
+
     void set_capacity() {
         if(hall_id==1125) {capacity=10;return;}
         if(hall_id==1126) {capacity=2;return;}

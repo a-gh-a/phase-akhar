@@ -1,2 +1,0 @@
-10,Amin,istanboli,golstan,0
-11,Amin,gorme sabzi,golstan,0

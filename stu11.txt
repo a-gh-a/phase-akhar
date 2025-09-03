@@ -1,0 +1,4 @@
+125,Kiana,istanboli,pradis,7,9179,honey,0,1,0,0
+126,Kiana,istanboli,pradis,7,9179,honey,0,1,0,1
+127,Kiana,istanboli,golstan,7,9179,honey,0,1,0,0
+127,Kiana,honey,golstan,7,9179,honey,0,1,0,1
