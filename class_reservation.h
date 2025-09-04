@@ -86,10 +86,10 @@ public:
     }
 
     void set_status_by_file(int i) {
-        if (i==0) status = SUCCESS;
-        if (i==1) status = CANCELLED;
-        if (i==2) status = FAILED;
-        //else cout << "error in ReservationStatus!";
+        if (i==0){ status = SUCCESS;return;}
+        if (i==1){ status = CANCELLED;return;}
+        if (i==2){ status = FAILED;return;}
+        cout << "error in ReservationStatus!";
     }
 
 

@@ -38,16 +38,5 @@ public:
 };
 
 
-// توابع مربوط به تعاملات کاربری
-    void showStudentInfo();
-    void checkBalance();
-    void viewReservations();
-    void addReservation();
-    void addToShoppingCart();
-    void confirmShoppingCart();
-    void removeShoppingCartItem();
-    void increaseBalance();
-  //  void cancelReservation(){cancel();};
-
 
 #endif // CLASS_USER_H_INCLUDED

@@ -9,7 +9,7 @@ using namespace std;
 
 extern string sfile;
 
-//extern Transaction TRA;
+
 
 class Student : public User {
 private:
@@ -22,11 +22,6 @@ private:
 
 public:
 
-    // Constructor
-    // Student(int id, const string& name, const string& email, float balance,
-    //       const vector<int>& reservations, bool active, int phone)
-    //   : student_id(id), name(name), email(email), balance(balance),
-    //    reservations(reservations), active(active), phone(phone) {}
 
     // Optional: Default constructor
     Student() : student_id(0), name(""), email(""), balance(10),
@@ -59,16 +54,7 @@ public:
         return false;
     }
 
-    bool cancel_reservation(int meal_id) {
-        for (auto it = reservations.begin(); it != reservations.end(); ++it) {
-            if (*it == meal_id) {
-                reservations.erase(it);
-                return true;
-            }
-        }
-        cerr << "error\n";
-        return false;
-    }
+
 
     // Setters with validation
     void set_phone () {cout<<"enter phone:";cin>>phone;}

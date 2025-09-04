@@ -3,15 +3,17 @@
 
 using namespace std;
 
+int capacity;
+
+
 class din {
 private:
     int hall_id;
     string address;
-    int capacity;
 
 public:
 
-    din() : hall_id(0), address(""), capacity(0) {};
+    din() : hall_id(0), address("") {};
 
 
     void print() const {
@@ -44,6 +46,12 @@ public:
     void set_capacity() {
         if(hall_id==1125) {capacity=10;return;}
         if(hall_id==1126) {capacity=2;return;}
+        cout<<"error in capacity";
+    }
+
+    void set_agen_capacity() {
+        if(hall_id==1125) {capacity--;return;}
+        if(hall_id==1126) {capacity--;return;}
         cout<<"error in capacity";
     }
 

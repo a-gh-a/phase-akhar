@@ -21,8 +21,7 @@
 
 using namespace std;
 
-//userID,studentID,name,lastname,hashpassword,email,phone
-//Student stu1;
+
 din d1;
 M me1;
 ShoppingCart sh1;
@@ -100,11 +99,10 @@ vector<Reservation> loadReservationsFrom(const string& sfile) {
         stringstream ss(line);
         getline(ss, reservationIDStr, ',');
         getline(ss, studentIDStr, ',');
-        getline(ss, mealStr, ',');
+        getline(ss, mealnameStr, ',');
         getline(ss, hallStr, ',');
         getline(ss, blansStr, ',');
         getline(ss, mealidStr, ',');
-        getline(ss, mealnameStr, ',');
         getline(ss, mealtypeStr, ',');
         getline(ss, mealpriceStr, ',');
         getline(ss, mealdayStr, ',');
@@ -187,10 +185,8 @@ void P(Student & stu1) {
     cout << "2. Show credit\n";
     cout << "3. View reservations\n";
     cout << "4. Add reservation\n";
-    cout << "5.  \n";
-    cout << "6. Purchase confirmation\n";
-    cout << "7. Cancel the reservation\n";
-    cout << "8. EXIT\n";
+    cout << "5. Cancel the reservation\n";
+    cout << "6. EXIT\n";
     cout << "Choose: ";
     cin >> k;
 
@@ -216,11 +212,19 @@ void P(Student & stu1) {
         Reservation r;
         me1.input();
         d1.input();
+
+        for (const auto& res : re1)
+        res.get_hall().set_agen_capacity();
+
+        if(r.get_hall().get_capacity()>=1)
+        {
+
         TRA.setStatus();
         r.input(stu1, me1, d1, re1);
         stu1.set_balance(TRA.getAmount());
 
-
+        }
+        else{ cout<<"capacity of dining hall completed"<<endl<<"you retern to meno ...";Sleep(3000);capacity++;break;}
 
 
         // ذخیره‌سازی اطلاعات در فایل
@@ -232,7 +236,6 @@ void P(Student & stu1) {
                     << "," << r.get_hall ().get_address()
                     << "," << TRA.getAmount()
                     << "," << me1.get_meal_id()
-                    << "," << me1.get_name()
                     << "," << me1.get_type()
                     << "," << me1.get_price()
                     << "," << me1.get_day()
@@ -244,13 +247,8 @@ void P(Student & stu1) {
 
         break;
     }
-    case 5:
 
-        break;
-    case 6:
-        // sh1.confirmPurchase(); // اگر پیاده‌سازی شده
-        break;
-    case 7:{
+    case 5:{
          int i;
          i=1;
          for (const auto& res : re1) {
@@ -271,7 +269,7 @@ void P(Student & stu1) {
 
         break;
     }
-    case 8:
+    case 6:
         {
 
         ofstream file(sfile, ios::trunc);
@@ -284,11 +282,10 @@ void P(Student & stu1) {
                     << "," << res.get_meall().get_name()
                     << "," << res.get_hall ().get_address()
                     << "," << TRA.getAmount()
-                    << "," << me1.get_meal_id()
-                    << "," << me1.get_name()
-                    << "," << me1.get_type()
-                    << "," << me1.get_price()
-                    << "," << me1.get_day()
+                    << "," << res.get_meall().get_meal_id()
+                    << "," << res.get_meall().get_type()
+                    << "," << res.get_meall().get_price()
+                    << "," << res.get_meall().get_day()
                     << "," << res.get_status()<< endl;
         } else{ cout << "Unable to open file"; Sleep(2000);}
 
@@ -323,10 +320,6 @@ int main() {
 
 
 
-
-         //    cout<< ", Student: " << re1[1].get_student().get_name()
-          //   << ", Meal: " << re1[1].get_meall().get_name()
-           //  << ",dining hall:"<<re1[1].get_hall().get_address();
 
     while (true) {
         P(currentStudent);
